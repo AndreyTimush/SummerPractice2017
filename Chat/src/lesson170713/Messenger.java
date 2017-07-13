@@ -1,4 +1,6 @@
-package lesson170711;
+package lesson170713;
+
+import lesson170711.ChatClient;
 
 import javax.swing.*;
 import java.awt.*;

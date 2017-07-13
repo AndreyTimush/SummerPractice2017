@@ -1,4 +1,4 @@
-package lesson170711;
+package lesson170713;
 
 
 import java.io.IOException;
@@ -10,11 +10,11 @@ import java.util.function.Consumer;
 /**
  * Created by andrew on 13.07.17.
  */
-public class ChatClient {
+public class Communicator {
 
     public static void main(String[] args) {
 
-        ChatClient chat = new ChatClient();
+        Communicator chat = new Communicator();
 
 
         Scanner keyboardScanner = new Scanner(System.in);
