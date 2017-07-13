@@ -23,8 +23,8 @@ public class Messenger {
 
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
-        textArea.setAutoscrolls(true);
-        panel.add(textArea, BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        panel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel inputPanel = new JPanel();
 
