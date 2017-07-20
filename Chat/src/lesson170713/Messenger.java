@@ -42,22 +42,20 @@ public class Messenger {
 
         JTextField textField = new JTextField(20);
 
-        textField.addActionListener((e) -> {
-            sendText(textField);
-        });
+        textField.addActionListener((e) ->sendText(textField));
         inputPanel.add(textField);
 
         JButton sendButton = new JButton("Отправить");
         inputPanel.add(sendButton);
-
-        sendButton.addActionListener((e) -> {
-            sendText(textField);
-        });
+        sendButton.addActionListener((e) -> sendText(textField));
 
         panel.add(inputPanel, BorderLayout.SOUTH);
 
         userList = new List(10, false);
 
+        userList.addActionListener(e ->{
+            textField.setText(e.getActionCommand() + " ");
+        });
 
         panel.add(userList, BorderLayout.WEST);
 
@@ -71,9 +69,7 @@ public class Messenger {
 
         chat = new Communicator();
 
-        chat.init(Messenger::placeText);
-
-
+        chat.init(Messenger::processServerMessage);
 
     }
 
@@ -83,11 +79,31 @@ public class Messenger {
         chat.sendTextToServer(text);
     }
 
-    private static void placeText(String text) {
+    private static void processServerMessage(String text) {
         if (text.startsWith("/name")) {
             String[] words = text.split(" ");
             String userName = words[1];
+            textArea.append("Добро пожаловать в чат, " + userName + "\n");
+            return;
+        }
+        if (text.startsWith("/list")){
+            String[] names = text.split(" ");
+            for ( int i = 1; i < names.length; i++){
+               userList.add(names[i]);
+            }
+            return;
+        }
+        if (text.startsWith("/add")) {
+            String[] words = text.split(" ");
+            String userName = words[1];
             userList.add(userName);
+            return;
+        }
+        if (text.startsWith("/remove")) {
+            String[] words = text.split(" ");
+            String userName = words[1];
+            userList.remove(userName);
+            textArea.append("Пользователь " + userName + " покинул чат" + "\n");
             return;
         }
         textArea.append(text + '\n');
