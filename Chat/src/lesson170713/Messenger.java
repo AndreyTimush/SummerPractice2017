@@ -91,7 +91,7 @@ public class Messenger {
             return;
         }
         textArea.append(text + '\n');
-//		textArea.setCaretPosition(textArea.getDocument().getLength());
+		textArea.setCaretPosition(textArea.getDocument().getLength());
     }
 
 }

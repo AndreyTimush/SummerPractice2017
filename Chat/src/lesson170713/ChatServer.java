@@ -60,5 +60,4 @@ public class ChatServer {
         System.out.println("removed " + session);
         System.out.println("Sessions size = " + sessions.size());
     }
-
 }
