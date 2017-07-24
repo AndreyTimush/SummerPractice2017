@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.List;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
@@ -12,12 +14,14 @@ public class Messenger {
     static Communicator chat;
     private static JTextArea textArea;
     private static JScrollPane sp;
-    private static List userList;
+    private static JList userList;
     static String userName = "";
+    private static DefaultListModel<String> contactList;
+    private static JFrame frame;
 
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame("Чат");
+        frame = new JFrame("Чат");
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,11 +50,16 @@ public class Messenger {
 
         panel.add(inputPanel, BorderLayout.SOUTH);
 
-        userList = new List(10, false);
+        contactList = new DefaultListModel<>();
+        userList = new JList<>(contactList);
 
-        userList.addActionListener(e ->{
-            textField.setText(e.getActionCommand() + " ");
-        });
+        userList.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+              String nameContact = (String) userList.getSelectedValue();
+                  textField.setText(nameContact + "  ");
+          }}
+        );
 
         panel.add(userList, BorderLayout.WEST);
 
@@ -69,7 +78,14 @@ public class Messenger {
     }
 
     private static void sendText(JTextField textField) {
-        String text = textField.getText();
+        String[] words = textField.getText().split(" ");
+        String userName = words[0];
+        String text;
+        if(contactList.contains(userName)){
+            text="/private "+ textField.getText();
+        }else {
+            text=textField.getText();
+        }
         textField.setText("");
         chat.sendTextToServer(text);
     }
@@ -84,25 +100,27 @@ public class Messenger {
         if (text.startsWith("/list")){
             String[] names = text.split(" ");
             for ( int i = 1; i < names.length; i++){
-               userList.add(names[i]);
+               contactList.addElement(names[i]);
             }
             return;
         }
         if (text.startsWith("/add")) {
             String[] words = text.split(" ");
             String userName = words[1];
-            userList.add(userName);
+            contactList.addElement(userName);
             return;
         }
         if (text.startsWith("/remove")) {
             String[] words = text.split(" ");
             String userName = words[1];
-            userList.remove(userName);
+            contactList.removeElement(userName);
             textArea.append("Пользователь " + userName + " покинул чат" + "\n");
+
             return;
         }
         textArea.append(text + '\n');
 		textArea.setCaretPosition(textArea.getDocument().getLength());
+		frame.validate();
     }
 
 }

@@ -82,17 +82,26 @@ public class ChatServer {
     }
 
     private static void broadcast(String line) {
-        for (Map.Entry<String, ChatSession> session: sessions.entrySet()) {
-            broadcastService.execute( () -> {
-                session.getValue().send2Client(line);
-            });
+        String[] words = line.split(" ");
+
+        if (words.length>3 && words[2].equals("/private")) {
+            String message=line.replaceFirst(words[2],"");
+//            message=message.replaceFirst(words[3],"");
+            sessions.get(words[0]).send2Client(message);
+            sessions.get(words[3]).send2Client(message);
+        }else {
+            for (Map.Entry<String, ChatSession> session: sessions.entrySet()) {
+                broadcastService.execute( () -> {
+                    session.getValue().send2Client(line);
+                });
+            }
         }
     }
 
-    private static void removeSession(ChatSession session) {
-        sessions.remove(session);
-        broadcast("/remove " + session.getName());
-        System.out.println("removed " + session);
+    private static void removeSession(String login) {
+        sessions.remove(login);
+        broadcast("/remove " + login);
+        System.out.println("removed " + login);
         System.out.println("Sessions size = " + sessions.size());
     }
 }

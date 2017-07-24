@@ -29,7 +29,7 @@ public class ChatSession {
 
 
     void processConnection(Consumer<String> broadcaster,
-                           Consumer<ChatSession> sessionRemover) {
+                           Consumer<String> sessionRemover) {
 
         try {
 
@@ -43,7 +43,7 @@ public class ChatSession {
 
             System.out.println("connection is closed");
 
-            sessionRemover.accept(this);
+            sessionRemover.accept(this.getName());
 
             socket.close();
 
