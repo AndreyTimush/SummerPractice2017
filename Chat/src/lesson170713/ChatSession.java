@@ -15,10 +15,9 @@ public class ChatSession {
     private Scanner scanner;
 
 
-    public ChatSession(Socket socket, String name, long delay) {
+    public ChatSession(Socket socket, String name) {
         this.socket = socket;
         this.name = name;
-        this.delay = delay;
         try {
             scanner = new Scanner(socket.getInputStream());
             writer = new PrintWriter(socket.getOutputStream());

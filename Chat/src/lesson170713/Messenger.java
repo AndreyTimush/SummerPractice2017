@@ -5,13 +5,7 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.List;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 public class Messenger {
 
@@ -19,6 +13,7 @@ public class Messenger {
     private static JTextArea textArea;
     private static JScrollPane sp;
     private static List userList;
+    static String userName = "";
 
     public static void main(String[] args) {
 
